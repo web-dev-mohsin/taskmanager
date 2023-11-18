@@ -1,10 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'dart:ui';
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 TextStyle heading1Text(textColor){
@@ -98,30 +96,30 @@ Ink successButtonChild(String ButtonText){
   );
 }
 
-void successToast(msg){
-  Fluttertoast.showToast(
-    msg: msg,
-    gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 1,
-    toastLength: Toast.LENGTH_SHORT,
-    backgroundColor: Colors.green,
-    textColor: Colors.white,
-    fontSize: 16,
-
-  );
-
-}void errorToast(msg){
-  Fluttertoast.showToast(
-    msg: msg,
-    gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 1,
-    toastLength: Toast.LENGTH_SHORT,
-    backgroundColor: Colors.red,
-    textColor: Colors.white,
-    fontSize: 16,
-
-  );
-}
+// void successToast(msg){
+//   Fluttertoast.showToast(
+//     msg: msg,
+//     gravity: ToastGravity.BOTTOM,
+//     timeInSecForIosWeb: 1,
+//     toastLength: Toast.LENGTH_SHORT,
+//     backgroundColor: Colors.green,
+//     textColor: Colors.white,
+//     fontSize: 16,
+//
+//   );
+//
+// }void errorToast(msg){
+//   Fluttertoast.showToast(
+//     msg: msg,
+//     gravity: ToastGravity.BOTTOM,
+//     timeInSecForIosWeb: 1,
+//     toastLength: Toast.LENGTH_SHORT,
+//     backgroundColor: Colors.red,
+//     textColor: Colors.white,
+//     fontSize: 16,
+//
+//   );
+// }
 
 PinTheme appOTPStyle(){
   return PinTheme(
