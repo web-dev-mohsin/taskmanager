@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskmanager/api/api_client.dart';
 
 import '../../style/style.dart';
 
@@ -10,6 +11,24 @@ class EmailVerificationScreen extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
+  Map<String, String> formValues= {"email":""};
+
+  formOnchange(mapKey, mapValye){
+    setState(() {
+      formValues.update(mapKey, (value) => mapValye);
+    });
+  }
+  formOnSubmit()async{
+    if(formValues['email']!.isEmpty){
+      print("email must be not empty");
+    }else{
+      var res = await verifyEmailRequest(formValues['email']);
+      if(res == true){
+        Navigator.pushNamed(context, "/pinVerification");
+        print("success");
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,12 +46,19 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 Text("A 6 digit verification pin will send to your email address", style: heading6Text(Colors.black26),),
                 SizedBox(height: 20,),
 
-                TextFormField(decoration: appInputDecoration("Email Address"),),
+                TextFormField(
+                  onChanged: (value){
+                    formOnchange('email', value);
+                  },
+                  decoration: appInputDecoration("Email Address"),),
 
                 SizedBox(height: 20,),
-                Container(child: ElevatedButton(
+                Container(
+                  child: ElevatedButton(
                     style: appButtonStyle(),
-                    onPressed: (){}, child: successButtonChild("Next")),)
+                    onPressed: (){
+                      formOnSubmit();
+                    }, child: successButtonChild("Next")),)
 
 
 

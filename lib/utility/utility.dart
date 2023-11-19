@@ -1,12 +1,11 @@
 
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> storeUserData(userData)async{
-      print("mytoken $userData");
+
   if (userData == null) {
     // Handle the case where userData is null, if needed
-    return;
+    return ;
   }else {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -19,11 +18,23 @@ Future<void> storeUserData(userData)async{
   }
 
 
+}
+
+Future<void> writeEmailVerification(email) async{
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  await prefs.setString("emailVerification", email);
 
 }
 
-Future<String?> getUserData(key)async{
+Future<String?> writeOTPVerification(otp)async{
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString("otpVerification", otp);
+}
+
+Future<String?> getUserData(keyText)async{
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? data = await prefs.getString('email');
+  String? data = await prefs.getString(keyText);
   return data;
 }
+

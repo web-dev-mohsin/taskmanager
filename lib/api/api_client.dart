@@ -13,14 +13,11 @@ Future<bool> loginRequest(Map<String, String> formValues) async{
   var url = Uri.parse("$baseUrl/login");
   var postBody = json.encode(formValues);
   requestHeader['Content-Length'] = postBody.length.toString();
-
   try {
     var response = await http.post(url, headers: requestHeader, body: postBody);
     var resultCode = response.statusCode;
     var resultBody = json.decode(response.body);
-    // print(resultBody);
     if(resultCode ==200 && resultBody['status'] =="success"){
-      // print(resultBody);
       storeUserData(resultBody);
       return true;
     }else{
@@ -34,48 +31,81 @@ Future<bool> loginRequest(Map<String, String> formValues) async{
 }
 
 Future<bool> registrationRequest(formValues)async{
-  var url = Uri.parse("$baseUrl/registration");
-  var postBody = json.encode(formValues);
-  var response = await http.post(url, headers: requestHeader, body: postBody);
-  var resultCode = response.statusCode;
-  var resultBody = json.decode(response.body);
-  
-  if(resultCode ==200 && resultBody['status'] == 'success'){
-    // successToast("Request success");
-    return true;
+  if(formValues !=null){
+    var url = Uri.parse("$baseUrl/registration");
+    var postBody = json.encode(formValues);
+    requestHeader['Content-Length'] = postBody.length.toString();
+    try{
+      var response = await http.post(url, headers: requestHeader, body: postBody);
+      var resultCode = response.statusCode;
+      var resultBody = json.decode(response.body);
+      if(resultCode ==200 && resultBody['status'] == 'success'){
+        return true;
+      }else{
+
+        return false;
+      }
+    }catch(e){
+      print("$e");
+      return false;
+    }
+
   }else{
-    // errorToast("Request Fail! try again");
+    print("form value is empty");
     return false;
   }
+
 }
 
 Future<bool> verifyEmailRequest(email)async{
-  var url = Uri.parse("$baseUrl/RecoverVerifyEmail/$email");
-  var response = await http.get(url, headers: requestHeader);
-  var resultCode = response.statusCode;
-  var resultBody = json.decode(response.body);
-  if(resultCode == 200 && resultBody['status'] == "success"){
-    // successToast("Request Success");
-    return true;
-  }else
-    {
-      // errorToast("Request Fail! try again");
+  if(email !=null){
+    var url = Uri.parse("$baseUrl/RecoverVerifyEmail/$email");
+    try{
+      var response = await http.get(url, headers:  {'Content-Type': 'application/json'});
+      var resultCode = response.statusCode;
+      var resultBody = json.decode(response.body);
+      if(resultCode == 200 && resultBody['status'] == "success"){
+        print(resultBody);
+        await writeEmailVerification(email);
+        return true;
+      }else
+      {
+        // errorToast("Request Fail! try again");
+        return false;
+      }
+    }catch(e){
+      print("$e");
       return false;
     }
+
+  }else{
+    return false;
+  }
+
 }
+
+
 Future<bool> verifyOTPRequest(email, otp)async{
   var url = Uri.parse("$baseUrl/RecoverVerifyOTP/$email/$otp");
-  var response = await http.get(url, headers: requestHeader);
-  var resultCode = response.statusCode;
-  var resultBody = json.decode(response.body);
-  if(resultCode == 200 && resultBody['status'] == "success"){
-    // successToast("Request Success");
-    return true;
-  }else
+
+  try{
+
+    var response = await http.get(url, headers: requestHeader);
+    var resultCode = response.statusCode;
+    var resultBody = json.decode(response.body);
+    if(resultCode == 200 && resultBody['status'] == "success"){
+       await writeOTPVerification(otp);
+      return true;
+    }else
     {
       // errorToast("Request Fail! try again");
       return false;
     }
+  }catch(e){
+    print("$e");
+    return false;
+  }
+
 }
 
 Future<bool> setPasswordRequest(formValue)async{

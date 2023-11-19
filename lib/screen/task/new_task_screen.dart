@@ -19,10 +19,10 @@ class _PendingTaskScreenState extends State<NewTaskScreen> {
   }
 
   callUserData()async{
-    String? newemail = await getUserData("email");
-    print(newemail);
+    String? getEmail = await getUserData("email");
+
     setState(() {
-      email = newemail!;
+      email = getEmail!;
     });
   }
 

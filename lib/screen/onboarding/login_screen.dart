@@ -14,39 +14,42 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  Map<String, String> formValues = {"email":"mohsin@gmail.com", "password":"1234"};
+  Map<String, String> formValues = {"email":"mohsin2@gmail.com", "password":"1234"};
   bool isLoading = false;
-
   inputOnchange(mapKey,textValue){
     setState(() {
       formValues.update(mapKey, (value) => textValue);
     });
   }
 
+
+
   formOnSubmit()async{
 
     var res = await loginRequest(formValues);
 
     if(formValues['email']!.isEmpty){
-      // errorToast("Email is Required");
+
     }else if(formValues['password']!.isEmpty){
-      // errorToast("Password is Required");
+
     }else{
       setState(() {
         isLoading = true;
       });
-      // bool res = await loginRequest(formValues);
-      if(res==true){
-        //Navigate to dashboard
+      bool res = await loginRequest(formValues);
 
+      if(res==true){
         Navigator.pushNamedAndRemoveUntil(context, "/newTaskScreen", (route) => false);
 
       }else{
         // errorToast("Fail! Please try again");
       }
-
+      setState(() {
+        isLoading = false;
+      });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           screenBackground(context),
           Center(
-            child:  Container(
+            child: isLoading ==true ? CircularProgressIndicator() : Container(
               padding: EdgeInsets.all(30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
 
                   ),
+
                   const SizedBox(height: 20,),
                   TextFormField(
                     decoration: appInputDecoration("Password"),
@@ -84,8 +88,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: appButtonStyle(),
                       onPressed: (){
                         formOnSubmit();
-                      }, child: successButtonChild("Login")),)
 
+                      }, child: successButtonChild("Login")),),
+                  TextButton(onPressed: (){
+                    Navigator.pushNamed(context, "/emailVerification");
+                  }, child: Text("Forget Password")),
+                    TextButton(onPressed: (){
+                      Navigator.pushNamed(context, "/registration");
+                    }, child: Text("SignUp")),
 
 
                 ],
