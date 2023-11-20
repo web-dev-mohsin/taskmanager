@@ -1,0 +1,4 @@
+
+class AppContents{
+  final  baseUrl = "";
+}

@@ -78,6 +78,7 @@ TextStyle buttonTextStyle(){
   return TextStyle(
 
     fontSize: 14,
+    color: Colors.white,
     fontFamily: 'poppins',
     fontWeight: FontWeight.w400,
   );

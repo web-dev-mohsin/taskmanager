@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:taskmanager/utility/utility.dart';
 import 'dart:async';
@@ -65,7 +66,6 @@ Future<bool> verifyEmailRequest(email)async{
       var resultCode = response.statusCode;
       var resultBody = json.decode(response.body);
       if(resultCode == 200 && resultBody['status'] == "success"){
-        print(resultBody);
         await writeEmailVerification(email);
         return true;
       }else
@@ -89,12 +89,12 @@ Future<bool> verifyOTPRequest(email, otp)async{
   var url = Uri.parse("$baseUrl/RecoverVerifyOTP/$email/$otp");
 
   try{
-
-    var response = await http.get(url, headers: requestHeader);
+    var response = await http.get(url, headers:{'Content-Type': 'application/json'});
+    await writeOTPVerification(otp);
     var resultCode = response.statusCode;
     var resultBody = json.decode(response.body);
-    if(resultCode == 200 && resultBody['status'] == "success"){
-       await writeOTPVerification(otp);
+    if(resultBody['status'] =="success"){
+
       return true;
     }else
     {
@@ -102,7 +102,10 @@ Future<bool> verifyOTPRequest(email, otp)async{
       return false;
     }
   }catch(e){
-    print("$e");
+    if (kDebugMode) {
+      print("$e");
+
+    }
     return false;
   }
 
@@ -111,15 +114,24 @@ Future<bool> verifyOTPRequest(email, otp)async{
 Future<bool> setPasswordRequest(formValue)async{
   var url = Uri.parse("$baseUrl/RecoverResetPass");
   var postBody = json.encode(formValue);
-  var response = await http.post(url, headers: requestHeader, body: postBody );
-  var resultCode = response.statusCode;
-  var resultBody = json.decode(response.body);
-  if(resultCode == 200 && resultBody['status'] == "success"){
-    // successToast("Request Success");
-    return true;
-  }else
-    {
-      // errorToast("Request Fail! try again");
+
+  requestHeader['Content-Length'] = postBody.length.toString();
+  try{
+    var response = await http.post(url, headers: requestHeader, body: postBody );
+    var resultCode = response.statusCode;
+    var resultBody = json.decode(response.body);
+
+    if(resultCode == 200 && resultBody['status'] == "success"){
+      // successToast("Request Success");
+      print("success");
+      return true;
+    }else {
+      print("Return false $resultBody");
       return false;
     }
+  }catch(e){
+    print("$e");
+    return false;
+  }
+
 }

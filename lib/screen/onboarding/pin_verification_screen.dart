@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:taskmanager/api/api_client.dart';
 
 import '../../style/style.dart';
+import '../../utility/utility.dart';
 
 class PinVerificationScreen extends StatefulWidget {
   const PinVerificationScreen({super.key});
@@ -11,6 +13,27 @@ class PinVerificationScreen extends StatefulWidget {
 }
 
 class _PinVerificationScreenState extends State<PinVerificationScreen> {
+
+  Map<String, String> formValue = {"otp":""};
+
+
+  inputOnchange(mapKey, mapValue){
+    setState(() {
+      formValue.update(mapKey, (value) => mapValue);
+
+    });
+  }
+formOnSubmit() async{
+    if(formValue['otp'] !=null){
+      var otp = formValue['otp'];
+      var verifyEmail = getUserData("emailVerification");
+      var res = await verifyOTPRequest(verifyEmail, otp);
+      if(res == true){
+        print("success");
+        Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
+      }
+        }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,8 +61,8 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                 onCompleted: (v){
 
                 },
-                onChanged: (v){
-
+                onChanged: (value){
+                  inputOnchange("otp", value);
                 },
 
 
@@ -48,7 +71,13 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                 SizedBox(height: 20,),
                 Container(child: ElevatedButton(
                     style: appButtonStyle(),
-                    onPressed: (){}, child: successButtonChild("Verify")),)
+                    onPressed: (){
+                      formOnSubmit();
+                    }, child: successButtonChild("Verify")),),
+
+                TextButton(onPressed: (){
+                  Navigator.pushNamed(context, "/setPassword");
+                }, child: Text("Change Pass")),
 
 
 

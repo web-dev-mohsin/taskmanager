@@ -14,7 +14,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  Map<String, String> formValues = {"email":"mohsin2@gmail.com", "password":"1234"};
+  Map<String, String> formValues = {"email":"", "password":""};
   bool isLoading = false;
   inputOnchange(mapKey,textValue){
     setState(() {
@@ -90,9 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         formOnSubmit();
 
                       }, child: successButtonChild("Login")),),
+
                   TextButton(onPressed: (){
                     Navigator.pushNamed(context, "/emailVerification");
-                  }, child: Text("Forget Password")),
+                  }, child: const Text("Forget Password")),
                     TextButton(onPressed: (){
                       Navigator.pushNamed(context, "/registration");
                     }, child: Text("SignUp")),
