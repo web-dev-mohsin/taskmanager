@@ -13,9 +13,9 @@ class EmailVerificationScreen extends StatefulWidget {
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   Map<String, String> formValues= {"email":""};
 
-  formOnchange(mapKey, mapValye){
+  formOnchange(mapKey, mapValue){
     setState(() {
-      formValues.update(mapKey, (value) => mapValye);
+      formValues.update(mapKey, (value) => mapValue);
     });
   }
   formOnSubmit()async{

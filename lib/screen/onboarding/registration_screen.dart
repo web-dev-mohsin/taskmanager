@@ -11,9 +11,10 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  // registration data received form text field
   Map<String, String> formValues = {"email":"","firstName":"","lastName":"","mobile":"","password":"","photo":"", 'cpassword':""};
 
-    inputOnchange(mapKey, mapValue){
+  inputOnchange(mapKey, mapValue){
     setState(() {
       formValues.update(mapKey, (value) => mapValue);
     });
@@ -22,7 +23,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   formOnSubmit() async{
       if(formValues['email']!.isEmpty){
         print("Email must be not empty");
-
       }else if(formValues['firstName']!.isEmpty){
         print("First name must be not empty");
       }else if(formValues['password']!.isEmpty || formValues['cpassword']!.isEmpty) {
@@ -31,11 +31,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         print("Password not matched ");
       }else{
        var res = await registrationRequest(formValues);
-       if(res==true){
-         print("Success");
+       if(res == true){
+         Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
+         print("Registration Success");
        }
       }
-
   }
 
   @override
@@ -52,51 +52,61 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Get Started with", style: heading1Text(Colors.black26),),
-                  SizedBox(height: 1,),
+                  const SizedBox(height: 1,),
                   Text("Learn with Rabbil Hasan", style: heading6Text(Colors.black26),),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   TextFormField(
                     onChanged:(value){
                         inputOnchange("firstName", value);
                     },
                     decoration: appInputDecoration("First Name"),),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   TextFormField(
                     onChanged:(value){
                         inputOnchange("lastName", value);
-                    },decoration: appInputDecoration("Last Name"),),
-                  SizedBox(height: 20,),
+                    },
+                    decoration: appInputDecoration("Last Name"),),
+                  const SizedBox(height: 20,),
                   TextFormField(
                     onChanged:(value){
                         inputOnchange("mobile", value);
-                    },decoration: appInputDecoration("Phone Number"),),
+                    },
+                    decoration: appInputDecoration("Phone Number"),),
                   SizedBox(height: 20,),
               
                   TextFormField(
                     onChanged:(value){
                         inputOnchange("email", value);
-                    },decoration: appInputDecoration("Email Address"),),
-                  SizedBox(height: 20,),
+                    },
+                    decoration: appInputDecoration("Email Address"),),
+                  const SizedBox(height: 20,),
                   TextFormField(
                     onChanged:(value){
                         inputOnchange("password", value);
-                    },decoration: appInputDecoration("Password"),),
-                  SizedBox(height: 20,),
+                    },
+                    decoration: appInputDecoration("Password"),),
+                  const SizedBox(height: 20,),
                   TextFormField(
                     onChanged:(value){
                         inputOnchange("cpassword", value);
-                    },decoration: appInputDecoration("Confirm Password"),),
+                    },
+                    decoration: appInputDecoration("Confirm Password"),),
                   const SizedBox(height: 20,),
-                  Container(child: ElevatedButton(
+                  ElevatedButton(
                       style: appButtonStyle(),
                       onPressed: (){
                         formOnSubmit();
-                      }, child: successButtonChild("Registration")),),
+                      }, child: successButtonChild("Registration")),
 
-                  TextButton(onPressed: (){
-                    Navigator.pushNamed(context, "/login");
-                  }, child: const Text("Login"))
-              
+                 Row(
+                   children: [
+                     const Flexible(child: Text("You have already account? Please login! ")),
+                     TextButton(onPressed: (){
+                       Navigator.pushNamed(context, "/login");
+                     }, child: const Text("Login"))
+
+                   ],
+                 )
               
               
                 ],

@@ -2,9 +2,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> storeUserData(userData)async{
-
   if (userData == null) {
-    // Handle the case where userData is null, if needed
     return ;
   }else {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -15,25 +13,23 @@ Future<void> storeUserData(userData)async{
     await prefs.setString('lastName', userData['data']['lastName'] ?? '');
     await prefs.setString('mobile', userData['data']['mobile'] ?? '');
     await prefs.setString('photo', userData['data']['photo'] ?? '');
+    if(userData['token'] !=null){
+      await prefs.setBool('isLogin', true);
+    }
   }
-
-
 }
 
 Future<void> otpStore(otp)async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-
   await prefs.setString('otp', otp);
 }
 
 Future<void> writeEmailVerification(email) async{
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-
   await prefs.setString("emailVerification", email);
-
 }
 
-Future<void> writeOTPVerification(otp)async{
+Future<void> setOTP(otp)async{
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString("otpVerification", otp);
 
@@ -41,7 +37,7 @@ Future<void> writeOTPVerification(otp)async{
 
 Future<String?> getUserData(keyText)async{
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? data = await prefs.getString(keyText);
+  String? data = prefs.getString(keyText);
   return data;
 }
 

@@ -15,22 +15,19 @@ class PinVerificationScreen extends StatefulWidget {
 class _PinVerificationScreenState extends State<PinVerificationScreen> {
 
   Map<String, String> formValue = {"otp":""};
-
-
   inputOnchange(mapKey, mapValue){
     setState(() {
       formValue.update(mapKey, (value) => mapValue);
-
     });
   }
+
 formOnSubmit() async{
     if(formValue['otp'] !=null){
       var otp = formValue['otp'];
-      var verifyEmail = getUserData("emailVerification");
+      var verifyEmail = await getUserData("emailVerification");
       var res = await verifyOTPRequest(verifyEmail, otp);
       if(res == true){
-        print("success");
-        Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, "/setPassword", (route) => false);
       }
         }
   }

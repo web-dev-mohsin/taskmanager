@@ -73,9 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onChanged: (value){
                       inputOnchange("email", value);
                     },
-
                   ),
-
                   const SizedBox(height: 20,),
                   TextFormField(
                     decoration: appInputDecoration("Password"),
@@ -84,20 +82,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const SizedBox(height: 20,),
-                  Container(child: ElevatedButton(
+                  ElevatedButton(
                     style: appButtonStyle(),
                       onPressed: (){
                         formOnSubmit();
 
-                      }, child: successButtonChild("Login")),),
+                      }, child: successButtonChild("Login")),
 
                   TextButton(onPressed: (){
                     Navigator.pushNamed(context, "/emailVerification");
                   }, child: const Text("Forget Password")),
-                    TextButton(onPressed: (){
-                      Navigator.pushNamed(context, "/registration");
-                    }, child: Text("SignUp")),
+                 Row(
+                   children: [
+                     const Flexible(child: Text("You have no account?")),
+                     TextButton(onPressed: (){
+                       Navigator.pushNamed(context, "/registration");
+                     }, child: const Text("SignUp")),
 
+                   ],
+                 )
 
                 ],
               ),

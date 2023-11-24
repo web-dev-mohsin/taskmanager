@@ -48,6 +48,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
       var res = await setPasswordRequest(formValues);
       if(res ==true){
         print("success");
+        Navigator.pushNamedAndRemoveUntil(context, "/newTaskScreen", (route) => false);
       }
   }
 
