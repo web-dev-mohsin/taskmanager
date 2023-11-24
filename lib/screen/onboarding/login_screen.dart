@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       bool res = await loginRequest(formValues);
 
       if(res==true){
-        Navigator.pushNamedAndRemoveUntil(context, "/newTaskScreen", (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
 
       }else{
         // errorToast("Fail! Please try again");
@@ -93,6 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.pushNamed(context, "/emailVerification");
                   }, child: const Text("Forget Password")),
                  Row(
+                   crossAxisAlignment: CrossAxisAlignment.center,
+                   mainAxisAlignment: MainAxisAlignment.center,
                    children: [
                      const Flexible(child: Text("You have no account?")),
                      TextButton(onPressed: (){

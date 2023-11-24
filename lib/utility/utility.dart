@@ -1,4 +1,6 @@
 
+import 'dart:typed_data';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> storeUserData(userData)async{
@@ -39,5 +41,26 @@ Future<String?> getUserData(keyText)async{
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? data = prefs.getString(keyText);
   return data;
+}
+
+Future<bool> removeToken()async{
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove("token");
+  return true;
+}
+
+showBase64Image(String? base64){
+  if (base64 == null) {
+
+    return null;
+  }
+  UriData? data =  Uri.parse(base64!).data;
+  if (data == null) {
+
+    return null;
+  }
+
+  Uint8List? image = data.contentAsBytes();
+  return image;
 }
 

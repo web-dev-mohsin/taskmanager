@@ -99,8 +99,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       }, child: successButtonChild("Registration")),
 
                  Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
                    children: [
-                     const Flexible(child: Text("You have already account? Please login! ")),
+                     const Flexible(child: Text("You have already account? ")),
                      TextButton(onPressed: (){
                        Navigator.pushNamed(context, "/login");
                      }, child: const Text("Login"))

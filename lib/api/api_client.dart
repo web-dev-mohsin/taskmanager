@@ -9,6 +9,11 @@ import 'dart:async';
 var baseUrl = "https://task.teamrabbil.com/api/v1";
 var requestHeader = {'Content-Type': 'application/json'};
 
+var requestHeaderWithToken = {
+  'Content-Type': 'application/json',
+  'token': '',
+};
+
 Future<bool> loginRequest(Map<String, String> formValues) async{
   var url = Uri.parse("$baseUrl/login");
   var postBody = json.encode(formValues);
@@ -25,7 +30,7 @@ Future<bool> loginRequest(Map<String, String> formValues) async{
     }else{
       return false;
     }
-    
+
   } catch (e) {
     print('Error: $e,  uri=$url');
     return false;
@@ -62,6 +67,7 @@ Future<bool> registrationRequest(formValues)async{
   }
 
 }
+
 Future<bool> verifyEmailRequest(email)async{
     var url = Uri.parse("$baseUrl/RecoverVerifyEmail/$email");
 
@@ -85,6 +91,7 @@ Future<bool> verifyEmailRequest(email)async{
 
 
 }
+
 Future<bool> verifyOTPRequest(email, otp)async{
   var url = Uri.parse("$baseUrl/RecoverVerifyOTP/$email/$otp");
 
@@ -135,40 +142,36 @@ Future<bool> setPasswordRequest(formValue)async{
 
 }
 
+Future<dynamic> taskListCalled(param) async{
+  var url = Uri.parse("$baseUrl/ListTaskByStatus/$param");
+  var token = await getUserData("token");
+  requestHeaderWithToken['token'] = token!;
 
-
-
-
-Future<bool> rxApiCall()async{
-  var url = Uri.parse("https://rxapi.navanapharma.com/api/sync/chiefcomplain");
-  var headers = {
-    'Accept': 'application/json',
-    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YTU3ZWY4OS04MjJmLTRkZjYtOGU5MS00NDBiMGMzYzk2MDIiLCJqdGkiOiJhMmE5MzdmZmFhNDZkZGJkZGJlMWQ5YzBmYjA5OTFkMWIxNjBkMDIyM2M0NDFiNTkwMGJjMTY3ODBjNTYxNjhkZWQyMjkyMWQ0OTJmYjI2YiIsImlhdCI6IjE3MDA2MzE2MjYuMzA2MzUzIiwibmJmIjoiMTcwMDYzMTYyNi4zMDYzNTkiLCJleHAiOiIxNzMyMjU0MDI2LjI3Njg2MiIsInN1YiI6IjY3OSIsInNjb3BlcyI6W119.FysskCcXSlBzWcTjgSWtQ-vFn7eDc8w43WggrLRyJhlPPv592lWWW1Mq9tyjV3KUz3QLPSXY1rzggGZQl6iOkEfDQ_jO4AavuYr2gBDSbJheDFMAeAZuyC2C6yOgKb87cXJDkwyuDxt5TrSXDtoJtDYTHhUu5KoiTY8YYBNqT4jqCVQif68V4D3WRF-lgS58xweVEqgUlmLASySvZVeL5CN6GnOAOsiMhyWmVY2LWll7-_5UMBhZ3XddqVGnkmGmAEbNpDsTAw0w6fMhjPjsqVlB_2C3osjY9pA5UaYF4dfy4pTFllupea0RIxHDer0tRnO0-Rs3Bna2cFRqu0eVT3oeb6WAeA6rF8uF2O4hr_Q9IEimhIv5zW27b1lVEQ0PFll_8vdYGGNFG912O2IwI7bqrFCDP73BMoC9Yi9HLut-VAsuCzZq02zLScO15aWcMU8_1dDtAbZiM3CHbipaAywVR7mQzR5R8Odc_M0vQnkIfzIg-gq_p-HJpDM_y_GzFCZGA2oUxh-mdpTdnlWH0nbPFSB3W9uJ1Vy4GakY9EDMZQEhcMjSL65guf2leHVrd5gkBHAdk-yhzDv_wc8zx-adAzWXszdkqUaZj4wJAKxnMTrAxwyIJg9dpzhhYthUuVgBb3eslDnlJWIkPOs5D8v0gZYpvMxg-EVoM2GFFSI',
-    'Content-Type': 'application/x-www-form-urlencoded'
-  };
   try{
-   var bodyFields = {
-      'date': '2021-02-02 18:55:01',
-      'page': '1',
-      'per_page': '50'
-    };
-    var response = await http.post(url, headers: headers, body: bodyFields);
+
+    var response = await http.get(url, headers: requestHeaderWithToken);
     var responseCode = response.statusCode;
     var responseBody = json.decode(response.body);
-    if(responseCode == 200){
-      print("success");
+
+    if(responseCode == 200 && responseBody['status'] == "success"){
       print(responseBody);
-      return true;
-    }else {
-      print("Return false $responseBody");
-      return false;
+      return responseBody['data'];
+    }else{
+      print(responseBody);
+      return [];
     }
+
   }catch(e){
     print("$e");
-    return false;
+    return [];
   }
 
+
 }
+
+
+
+
 
 
 

@@ -5,6 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+SizedBox sizeItemSizeBox(item){
+  return SizedBox(
+    width: double.infinity,
+    child: Container(
+      padding: EdgeInsets.all(5),
+      child:  item,
+    ),
+  );
+}
 TextStyle heading1Text(textColor){
   return TextStyle(
     color: textColor,
