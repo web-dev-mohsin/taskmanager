@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           screenBackground(context),
           Container(
-            padding: EdgeInsets.all(30),
+            padding: const EdgeInsets.all(30),
             child: Center(
               child: SvgPicture.asset("assets/images/logo.svg", alignment: Alignment.center,),
             ),

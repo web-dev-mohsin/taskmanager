@@ -78,7 +78,7 @@ Future<bool> verifyEmailRequest(email)async{
       var responseBody = json.decode(response.body);
 
       if(responseCode == 200 && responseBody['status'] =="success"){
-        await writeEmailVerification(email);
+        await storeEmailForVerification(email);
         return true;
       }else {
         return false;
@@ -169,6 +169,69 @@ Future<dynamic> taskListCalled(param) async{
 
 }
 
+Future<bool> taskCreateRequest(formValues)async{
+  var url = Uri.parse("$baseUrl/createTask");
+  var postBody = jsonEncode(formValues);
+  try{
+    var response = await http.post(url, headers: requestHeaderWithToken, body: postBody);
+    var responseStatus = response.statusCode;
+    var responseBody = jsonDecode(response.body);
+
+    if(responseStatus ==200 && responseBody['status'] == "success"){
+      print("Success");
+      return true;
+    }else{
+      return false;
+    }
+
+  }catch(e){
+    print("$e");
+    return false;
+  }
+}
+
+Future<bool> deleteTaskRequest(taskId)async{
+  var url = Uri.parse("$baseUrl/deleteTask/$taskId");
+  try{
+    var response = await http.get(url, headers: requestHeaderWithToken);
+    var responseCode = response.statusCode;
+    var responseBody = jsonDecode(response.body);
+
+    if(responseCode ==200 && responseBody['status'] =="success"){
+      print("Task deleted");
+
+      return true;
+    }else{
+      print("Something want wrong");
+      return false;
+    }
+
+
+  }catch(e){
+    print("$e");
+    return false;
+  }
+}
+
+Future<bool> updateTaskStatus(id,status)async{
+  var url = Uri.parse("$baseUrl/updateTaskStatus/$id/$status");
+
+  try{
+    var response =await http.get(url, headers: requestHeaderWithToken);
+    var responseCode = response.statusCode;
+    var responseBody = jsonDecode(response.body);
+
+    if(responseCode == 200 && responseBody['status'] == "success"){
+      return true;
+    }else{
+      return false;
+    }
+
+  }catch(e){
+    print("$e");
+    return false;
+  }
+}
 
 
 

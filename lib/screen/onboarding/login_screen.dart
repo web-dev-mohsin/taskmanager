@@ -15,38 +15,26 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   Map<String, String> formValues = {"email":"", "password":""};
-  bool isLoading = false;
-  inputOnchange(mapKey,textValue){
+  bool isLoading = true;
+
+  inputOnChange(mapKey,textValue){
     setState(() {
       formValues.update(mapKey, (value) => textValue);
     });
   }
 
-
-
-  formOnSubmit()async{
-
-    var res = await loginRequest(formValues);
-
+  onSubmit()async{
     if(formValues['email']!.isEmpty){
-
     }else if(formValues['password']!.isEmpty){
-
     }else{
-      setState(() {
-        isLoading = true;
-      });
+      setState(() {isLoading = true;});
       bool res = await loginRequest(formValues);
-
       if(res==true){
         Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
-
+        setState(() {isLoading = false;});
       }else{
         // errorToast("Fail! Please try again");
       }
-      setState(() {
-        isLoading = false;
-      });
     }
   }
 
@@ -58,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           screenBackground(context),
           Center(
-            child: isLoading ==true ? CircularProgressIndicator() : Container(
+            child: isLoading == false ? CircularProgressIndicator() : Container(
               padding: EdgeInsets.all(30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,21 +59,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                   decoration: appInputDecoration("Email Address"),
                     onChanged: (value){
-                      inputOnchange("email", value);
+                      inputOnChange("email", value);
                     },
                   ),
                   const SizedBox(height: 20,),
                   TextFormField(
                     decoration: appInputDecoration("Password"),
                     onChanged: (value){
-                      inputOnchange("password", value);
+                      inputOnChange("password", value);
                     },
                   ),
                   const SizedBox(height: 20,),
                   ElevatedButton(
                     style: appButtonStyle(),
                       onPressed: (){
-                        formOnSubmit();
+                        onSubmit();
 
                       }, child: successButtonChild("Login")),
 

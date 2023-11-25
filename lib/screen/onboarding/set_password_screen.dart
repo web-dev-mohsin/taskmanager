@@ -39,20 +39,16 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
   }
 
   formOnSubmit() async{
-
-
-  if(formValues['email'] !=null && formValues['OTP'] !=null){
-    if(formValues['password'] != formValues['cpassword']){
-      print("Password and confirm password not matched");
-    }else{
-      var res = await setPasswordRequest(formValues);
-      if(res ==true){
-        print("success");
-        Navigator.pushNamedAndRemoveUntil(context, "/newTaskScreen", (route) => false);
-      }
-  }
-
-
+    if(formValues['email'] !=null && formValues['OTP'] !=null){
+      if(formValues['password'] != formValues['cpassword']){
+        print("Password and confirm password not matched");
+      }else{
+        var res = await setPasswordRequest(formValues);
+          if(res ==true){
+            print("success");
+            Navigator.pushNamedAndRemoveUntil(context, "/newTaskScreen", (route) => false);
+          }
+        }
     }
   }
 

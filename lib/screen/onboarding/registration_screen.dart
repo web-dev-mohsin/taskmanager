@@ -13,6 +13,7 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   // registration data received form text field
   Map<String, String> formValues = {"email":"","firstName":"","lastName":"","mobile":"","password":"","photo":"", 'cpassword':""};
+  bool isLoading = true;
 
   inputOnchange(mapKey, mapValue){
     setState(() {
@@ -30,7 +31,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       }else if(formValues['password'] != formValues['cpassword']){
         print("Password not matched ");
       }else{
+        setState(() {isLoading = true;});
        var res = await registrationRequest(formValues);
+        setState(() {isLoading = false;});
        if(res == true){
          Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
          print("Registration Success");
@@ -44,8 +47,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       body: Stack(
         children: [
           screenBackground(context),
-          Container(
-            padding: EdgeInsets.all(30),
+         isLoading == false ? const Center(child: CircularProgressIndicator(),) :
+         Container(
+            padding: const EdgeInsets.all(30),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,8 +76,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         inputOnchange("mobile", value);
                     },
                     decoration: appInputDecoration("Phone Number"),),
-                  SizedBox(height: 20,),
-              
+                  const SizedBox(height: 20,),
                   TextFormField(
                     onChanged:(value){
                         inputOnchange("email", value);
@@ -98,16 +101,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         formOnSubmit();
                       }, child: successButtonChild("Registration")),
 
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: [
-                     const Flexible(child: Text("You have already account? ")),
-                     TextButton(onPressed: (){
-                       Navigator.pushNamed(context, "/login");
-                     }, child: const Text("Login"))
-
-                   ],
-                 )
+                   Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       const Flexible(child: Text("You have already account? ")),
+                       TextButton(onPressed: (){
+                         Navigator.pushNamed(context, "/login");
+                       }, child: const Text("Login"))
+                     ],
+                   )
               
               
                 ],

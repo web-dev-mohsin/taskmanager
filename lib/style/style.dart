@@ -5,6 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+Container statusPilContainer(pilText, bgColor){
+  return Container(
+
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      color: bgColor,
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      child: Center(child: Text(pilText, style: const TextStyle(color: Colors.white), )),
+    ),
+  );
+}
+
 SizedBox sizeItemSizeBox(item){
   return SizedBox(
     width: double.infinity,
@@ -36,14 +50,14 @@ InputDecoration appInputDecoration(label){
   return InputDecoration(
 
     focusedBorder: const OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.green, width: 1),
+      borderSide: BorderSide(color: Colors.green, width: 1),
     ),
-    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-    enabledBorder:  OutlineInputBorder(
+    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    enabledBorder:  const OutlineInputBorder(
       borderSide:  BorderSide(color: Colors.white, width: 2),
     ),
     focusColor: Colors.red,
-    border: OutlineInputBorder(),
+    border: const OutlineInputBorder(),
     labelText: label,
     filled: true,
     fillColor: Colors.white,
@@ -56,12 +70,13 @@ DecoratedBox appDropDownStyle(child){
       decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.white, width: 1),
                   borderRadius: BorderRadius.circular(10),),
     child: Padding(
-      padding: EdgeInsets.only(left: 30, right: 30),
+      padding: const EdgeInsets.only(left: 30, right: 30),
       child: child,
     ),
   );
 }
 
+// app background image
 SvgPicture screenBackground(context){
   return SvgPicture.asset(
      "assets/images/background.svg",
@@ -84,8 +99,7 @@ ButtonStyle appButtonStyle(){
 }
 
 TextStyle buttonTextStyle(){
-  return TextStyle(
-
+  return const TextStyle(
     fontSize: 14,
     color: Colors.white,
     fontFamily: 'poppins',
@@ -93,7 +107,7 @@ TextStyle buttonTextStyle(){
   );
 }
 
-Ink successButtonChild(String ButtonText){
+Ink successButtonChild(String buttonText){
   return Ink(
     decoration: BoxDecoration(
         color: Colors.green,
@@ -101,7 +115,7 @@ Ink successButtonChild(String ButtonText){
     child: Container(
       height: 45,
       alignment: Alignment.center,
-      child: Text(ButtonText, style: buttonTextStyle(),),
+      child: Text(buttonText, style: buttonTextStyle(),),
     ),
   );
 }
